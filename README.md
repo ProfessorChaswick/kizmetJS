@@ -1,2 +1,3 @@
-# kizmetJS
-Kizmit game written in JavaScript
+## kizmetJS
+Kizmit game written in JavaScript 
+with an HTML front end.
