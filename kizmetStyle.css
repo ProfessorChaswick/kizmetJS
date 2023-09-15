@@ -1,0 +1,13 @@
+/*kizmet styles*/
+tr
+{
+  background-color: whitesmoke;
+}
+
+td.score
+{
+	text-align:right;
+	color:blue;
+	background-color:#f9f9f9;
+	width:40px;
+}

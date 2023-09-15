@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>Play Kizmet</title>
+  <link rel="stylesheet" href="kizmetStyle.css" type="text/css" />
+<!-- Actual style needs to go to the template.css file in the joomla template. -->
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script type='text/javascript' src='kizmet.js' ></script>
+</head>
+<body>
+  <p style='color:blue; margin-top:2px; margin-bottom:2px; font-size: 11pt;'>
+	  Welcome to the javascript version of <a href="http://en.wikipedia.org/wiki/Kismet_(dice_game)" target="_blank">kizmet!</a><br />
+	  The inspiration of which is the Gnome game, <a href="https://wiki.gnome.org/Apps/Tali" target="_blank">Tali</a>
+  </p>
+  <div id="showHighScore" style="font-weight:bold; color:green;">+ <span id="HSshow" style="font-weight:normal; font-size:10pt;">Show High Scores</span></div>
+    <form name="newHi" method="POST">
+      <input type="hidden" name="newHigh" value="" />
+      <input type="hidden" name="kzWiz" value="" />
+    </form>
+<div id="highScore"><!-- Container for the mysql display -->
+</div><!-- End of High Score Container -->
+<table>
+<!--	<tr style="text-align:center;color:whitesmoke;">
+		<td id="numberOne">&nbsp;</td>
+		<td id="numberTwo">&nbsp;</td>
+		<td id="numberThree">&nbsp;</td>
+		<td id="numberFour">&nbsp;</td>
+		<td id="numberFive">&nbsp;</td>
+	</tr>-->
+  <tr style='background-color:green; color:white; font-size:8pt; text-align:center;'>
+    <td id="hold1" onmouseover="handYes('hold1')" onclick="elHoldo('hold1', 0)">
+      HOLD
+    </td>
+    <td id="hold2" onmouseover="handYes('hold2')" onclick="elHoldo('hold2', 1)">
+      HOLD
+    </td>
+    <td id="hold3" onmouseover="handYes('hold3')" onclick="elHoldo('hold3', 2)">
+      HOLD
+    </td>
+    <td id="hold4" onmouseover="handYes('hold4')" onclick="elHoldo('hold4', 3)">
+      HOLD
+    </td>
+    <td id="hold5" onmouseover="handYes('hold5')" onclick="elHoldo('hold5', 4)">
+      HOLD
+    </td>
+<!--    <td id="hold1">
+      HOLD
+    </td> -->
+  </tr>
+  <tr style='background-color:cyan'>
+    <td>
+      <img id="diOne" src="blank.jpg" />
+    </td>
+    <td>
+      <img id="diTwo" src="blank.jpg" />
+    </td>
+    <td>
+      <img id="diThree" src="blank.jpg" />
+    </td>
+    <td>
+      <img id="diFour" src="blank.jpg" />
+    </td>
+    <td>
+      <img id="diFive" src="blank.jpg" />
+    </td>
+    <td>
+      5 of a Kind Bonus<div id="5bonus">&nbsp</div>
+    </td>
+  </tr>
+</table>
+<button id="btnRoll" type='button' onclick="Roll()">ROLL</button>
+<div id="show">Roll:&nbsp;</div>
+<div id="theFinish"><!-- container for finishing stuff-->
+<button type="button" onclick="showPrompt()">Add your name</button>
+<p id="answer">&nbsp;</p>
+
+</div><!--end id"theFinish"-->
+<br />
+
+<table name='top' cellpadding='1' cellspacing='1' style='background-color:navy'>
+  <tr onclick="scrOnes()">
+    <td>
+      <img id='cube1' src="blank.png">
+    </td>
+    <td style="width:220px;">
+      Ones
+    </td>
+    <td class="score" id="ones">
+      &nbsp;
+    </td>
+  </tr>
+  <tr onclick="scrTwos()">
+    <td>
+      <img id='cube2' src="blank.png">
+    </td>
+    <td>
+      Twos
+    </td>
+    <td class="score" id="twos">
+      &nbsp;
+    </td>
+  </tr>
+  <tr onclick="scrThrees()">
+    <td>
+      <img id='cube3' src="blank.png">
+    </td>
+    <td>
+      Threes
+    </td>
+    <td class="score" id="threes">
+      &nbsp;
+    </td>
+  </tr>
+  <tr onclick="scrFours()">
+    <td>
+      <img id='cube4' src="blank.png">
+    </td>
+    <td>
+      Fours
+    </td>
+    <td class="score" id="fours">
+      &nbsp;
+    </td>
+  </tr>
+  <tr onclick="scrFives()">
+    <td>
+      <img id='cube5' src="blank.png">
+    </td>
+    <td>
+      Fives
+    </td>
+    <td class="score" id="fives">
+      &nbsp;
+    </td>
+  </tr>
+  <tr onclick="scrSixes()">
+    <td>
+      <img id="cube6" src="blank.png">
+    </td>
+    <td>
+      Sixes
+    </td>
+    <td class="score"  id="sixes">
+      &nbsp;
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img src="blank.png">
+    </td>
+    <td>
+      Total Top
+    </td>
+    <td class="score" id="totalTop">
+      &nbsp;
+    </td>
+  </tr>
+  <tr title="63-70: 35 :: 71-77: 55 :: > 77: 75">
+    <td>
+      <img src="blank.png">
+    </td>
+    <td>
+      Bonus
+    </td>
+    <td class="score" id="bonus">
+      &nbsp;
+    </td>
+  </tr>
+</table>
+<table name='bottom' cellpadding='1' cellspacing='1' style='background-color:navy'>
+  <tr onclick="scr2pair()">
+    <td>
+      <img id="cube2pair" src="blank.png">
+    </td>
+    <td style="width:220px;">
+      2 pair same colour
+    </td>
+    <td class="score"  id="twoPair">
+      &nbsp;
+    </td>
+  </tr>
+  <tr onclick="scr3kind()">
+    <td>
+      <img id="3kind" src="blank.png">
+    </td>
+    <td>
+      3 of a Kind
+    </td>
+    <td class="score"  id="threeKind">
+      &nbsp;
+    </td>
+  </tr>
+  <tr onclick="scrStraight()">
+    <td>
+      <img id="xstraight" src="blank.png">
+    </td>
+    <td>
+      Straight
+    </td>
+    <td class="score" id="straight">
+      &nbsp;
+    </td>
+  </tr>
+  <tr onclick="scrFlush()">
+    <td>
+      <img id="xflush" src="blank.png">
+    </td>
+    <td>
+      Flush (all same colour)
+    </td>
+    <td class="score" id="flush">
+      &nbsp;
+    </td>
+  </tr>
+  <tr onclick="scrFH()">
+    <td>
+      <img id="FH" src="blank.png">
+    </td>
+    <td>
+      Full House
+    </td>
+    <td class="score"  id="fullHouse">
+      &nbsp;
+    </td>
+  </tr>
+  <tr onclick="scrFHcolour()">
+    <td>
+      <img id="fhColour" src="blank.png">
+    </td>
+    <td>
+      Full House (same colour)
+    </td>
+    <td class="score" id="fullHouseColour">
+      &nbsp;
+    </td>
+  </tr>
+  <tr onclick="scr4kind()">
+    <td>
+      <img id="4kind" src="blank.png">
+    </td>
+    <td>
+      4 of a Kind
+    </td>
+    <td class="score" id="fourKind">
+      &nbsp;
+    </td>
+  </tr>
+  <tr onclick="scr5kind()">
+    <td>
+      <img id="5kind" src="blank.png">
+    </td>
+    <td>
+      5 of a Kind
+    </td>
+    <td class="score" id="fiveKind">
+      &nbsp;
+    </td>
+  </tr>
+  <tr onclick="scrChance()">
+    <td>
+      <img id="xchance" src="blank.png">
+    </td>
+    <td>
+      Chance
+    </td>
+    <td class="score" id="chance">
+      &nbsp;
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img src="blank.png">
+    </td>
+    <td style="font-weight:bold">
+      Game Total
+    </td>
+    <td class="score" style="font-weight:bold" id="GT">
+      &nbsp;
+    </td>
+  </tr>
+</table>
+<script type="text/javascript">
+  function refresh()
+  {
+    location.reload();
+  }
+</script>
+</body>
+</html>
